@@ -1,5 +1,5 @@
 ## Solana Raffles
 
 ### TODO
-- [] Front end
-- [] Entry Fee
+- [ ] Front end
+- [ ] Entry Fee
