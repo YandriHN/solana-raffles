@@ -1,2 +1,81 @@
 @import '../styles/variables.scss';
 
+.container {
+    .draw {
+
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.5s cubic-bezier(0, 1, 0, 1);
+
+        &.full {
+            max-height: 10000px;
+            transition: max-height 1s ease-in-out;
+          }
+
+        h3 {
+            margin:40px 0;
+        }
+        .winner {
+            padding: 30px 10px;
+            background-color: rgba(0, 0, 0, 0.308);
+            margin:5px 0;
+            border-radius: 2px;
+        }
+    }
+
+
+    h1 {
+        margin-bottom: 50px;
+        display: inline-block;
+    }
+    .tools {
+        height:80px;
+        line-height:80px;
+        text-align: right;
+        float:right;
+    }
+    .content {
+        width:100%;
+        .description {
+            @media only screen and (max-width: 800px) {
+                width:100%;
+            }
+            box-sizing: border-box;
+            padding-left:10px;
+            width:50%;
+            float:right;
+            text-overflow:clip;
+            
+        }
+        .actions {
+            @media only screen and (max-width: 800px) {
+                width:100%;
+            }
+            box-sizing: border-box;
+            margin-bottom:50px;
+            padding-right:10px;
+            width:50%;
+            float:left;
+            .selector {
+                width:100%;
+                h3 {
+                    display: inline-block;
+                    margin: 0 20px;
+                    width:50px;
+                    height:30px;
+
+                }
+                button {
+                    margin: 0 20px;
+                    font-weight: 800;
+                }
+                text-align: center;
+                background-color:  rgba(255, 255, 255, 0.103);
+                border-radius: 5px;
+                padding: 20px 5px;
+                margin-bottom:20px;
+
+            }
+        }
+    }
+}

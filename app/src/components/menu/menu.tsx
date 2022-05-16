@@ -21,7 +21,10 @@ export const Menu: FC = () => {
       {/* <img src={"/logo.svg"}/> <i>&nbsp;Raffles</i> */}
       <h1>Solana Raffles</h1>
    
-      <WalletMultiButton />
+   <div className={styles.wallet_button}>
+     <WalletMultiButton />
+   </div>
+      
       <div className={styles.links}>
         {links.map((link) => (
           <div className={styles.link} onClick={() => router.push(link.value.toString())}>
