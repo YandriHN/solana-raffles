@@ -1,20 +1,31 @@
 use anchor_lang::prelude::*;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf");
 
 #[program]
 pub mod solana_raffles {
     use super::*;
 
-    pub fn create_raffle(ctx: Context<CreateRaffle>, price: u64, ends: i64) -> Result<()> {
+    pub fn create_raffle(ctx: Context<CreateRaffle>, price: u64, ends: i64, title: String, description: String) -> Result<()> {
+
+        if title.chars().count() > 50 {
+            return Err(RaffleError::InputError.into())
+        }
+        if description.chars().count() > 100 {
+            return Err(RaffleError::InputError.into())
+        }
+
         let raffle = &mut ctx.accounts.raffle;
         raffle.authority = ctx.accounts.authority.key();
         raffle.ends = ends;
         raffle.price = price;
+        raffle.title = title;
+        raffle.description = description;
         Ok(())
     }
 
     pub fn purchase_ticket(ctx: Context<CreateTicket>) -> Result<()> {
+        
         let clock: Clock = Clock::get().unwrap();
         let raffle  = &ctx.accounts.raffle;
 
@@ -82,7 +93,10 @@ pub struct EndRaffle<'info> {
 pub struct Raffle {
     pub authority: Pubkey,
     pub ends: i64,
-    pub price: u64
+    pub price: u64,
+
+    pub title: String, // 50 * 4
+    pub description: String, // 100 * 4
 }
 
 #[account]
@@ -92,7 +106,7 @@ pub struct Ticket {
 }
 
 impl Raffle {
-    pub const LEN: usize = 32 + 16 + 8;
+    pub const LEN: usize = 32 + 16 + 8 + 50 * 4 + 100 * 4;
 }
 
 impl Ticket {
@@ -103,4 +117,6 @@ impl Ticket {
 pub enum RaffleError {
     #[msg("Raffle Has Ended")]
     RaffleEnded,
+    #[msg("Input Error")]
+    InputError,
 }

@@ -1,12 +1,13 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
-import { SolanaRaffles } from "../target/types/solana_raffles";
+import { SolanaRaffles, IDL } from "../target/types/solana_raffles";
 import { airdrop, log } from "./utils";
+import idl from '../target/idl/solana_raffles.json';
 
 describe("solana-raffles", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
-  const program = anchor.workspace.SolanaRaffles as Program<SolanaRaffles>;
+  const program =  new Program<SolanaRaffles>(IDL, new anchor.web3.PublicKey(idl.metadata.address));
 
   let authority = anchor.web3.Keypair.generate();
   let participant = anchor.web3.Keypair.generate();
@@ -26,11 +27,15 @@ describe("solana-raffles", () => {
 
   it("create raffle", async () => {
     let raffle = anchor.web3.Keypair.generate();
+
     let ticket_price = new anchor.BN(0.1 * anchor.web3.LAMPORTS_PER_SOL);
     let ends = new anchor.BN(Date.now() / 1000 + 5); // ends in 5 seconds
+    
+    let title = 'Okay Bears Giveaway 🎉';
+    let description = 'Giving away 1 okay bears, join our discord to enter.';
 
     const instruction = await program.methods
-      .createRaffle(ticket_price, ends)
+      .createRaffle(ticket_price, ends, title, description)
       .accounts({
         raffle: raffle.publicKey,
         authority: authority.publicKey,
