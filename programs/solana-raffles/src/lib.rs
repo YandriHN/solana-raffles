@@ -6,7 +6,7 @@ declare_id!("4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf");
 pub mod solana_raffles {
     use super::*;
 
-    pub fn create_raffle(ctx: Context<CreateRaffle>, price: u64, ends: i64, title: String, description: String) -> Result<()> {
+    pub fn create_raffle(ctx: Context<CreateRaffle>, price: u64, ends: i64, title: String, description: String, image: String, winners: u8) -> Result<()> {
 
         if title.chars().count() > 50 {
             return Err(RaffleError::InputError.into())
@@ -21,6 +21,8 @@ pub mod solana_raffles {
         raffle.price = price;
         raffle.title = title;
         raffle.description = description;
+        raffle.image = image;
+        raffle.winners = winners;
         Ok(())
     }
 
@@ -40,6 +42,9 @@ pub mod solana_raffles {
     }
 
     pub fn end_raffle(_ctx: Context<EndRaffle>) -> Result<()> { Ok(()) }
+
+    pub fn close_ticket_account(_ctx: Context<CloseTicketAccount>) ->  Result<()>{ Ok(()) }
+
  
 }
 
@@ -89,6 +94,18 @@ pub struct EndRaffle<'info> {
     pub raffle: Box<Account<'info, Raffle>>,
 }
 
+#[derive(Accounts)]
+pub struct CloseTicketAccount<'info> {
+    #[account(mut)]
+    pub participant: Signer<'info>,
+    #[account(
+        mut,
+        has_one = participant,
+        close = participant 
+    )]
+    pub ticket: Box<Account<'info, Ticket>>,
+}
+
 #[account]
 pub struct Raffle {
     pub authority: Pubkey,
@@ -97,6 +114,9 @@ pub struct Raffle {
 
     pub title: String, // 50 * 4
     pub description: String, // 100 * 4
+    pub image: String, //100 * 4
+
+    pub winners: u8, //
 }
 
 #[account]
@@ -106,7 +126,7 @@ pub struct Ticket {
 }
 
 impl Raffle {
-    pub const LEN: usize = 32 + 16 + 8 + 50 * 4 + 100 * 4;
+    pub const LEN: usize = 32 + 16 + 8 + (50 * 4) + (100 * 4) + (100 * 4) + 1;
 }
 
 impl Ticket {

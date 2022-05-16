@@ -33,9 +33,13 @@ describe("solana-raffles", () => {
     
     let title = 'Okay Bears Giveaway 🎉';
     let description = 'Giving away 1 okay bears, join our discord to enter.';
+    let image = 'https://i.ibb.co/w04Prt6/c1f64245afb2.gif';
+
+    let winners = 1;
+
 
     const instruction = await program.methods
-      .createRaffle(ticket_price, ends, title, description)
+      .createRaffle(ticket_price, ends, title, description, image, winners)
       .accounts({
         raffle: raffle.publicKey,
         authority: authority.publicKey,

@@ -7,7 +7,7 @@ solana_raffles = "4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf"
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "https://api.devnet.solana.com/"
+cluster = "devnet"
 wallet = "./auth.json"
 
 [scripts]
