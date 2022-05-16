@@ -4,10 +4,12 @@ import { SolanaRaffles, IDL } from "../target/types/solana_raffles";
 import { airdrop, log } from "./utils";
 import idl from '../target/idl/solana_raffles.json';
 
+const programId = '4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf'
+
 describe("solana-raffles", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
-  const program =  new Program<SolanaRaffles>(IDL, new anchor.web3.PublicKey(idl.metadata.address));
+  const program =  new Program<SolanaRaffles>(IDL, new anchor.web3.PublicKey(programId));
 
   let authority = anchor.web3.Keypair.generate();
   let participant = anchor.web3.Keypair.generate();
@@ -37,9 +39,16 @@ describe("solana-raffles", () => {
 
     let winners = 1;
 
-
     const instruction = await program.methods
-      .createRaffle(ticket_price, ends, title, description, image, winners)
+      .createRaffle(
+        ticket_price,
+        ends,
+        title,
+        description,
+        image,
+        winners,
+        1
+      )
       .accounts({
         raffle: raffle.publicKey,
         authority: authority.publicKey,
@@ -75,7 +84,7 @@ describe("solana-raffles", () => {
         raffle: raffle.publicKey,
         ticket: ticket.publicKey,
         participant: participant.publicKey,
-        authority: authority.publicKey,
+        authority: participant.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
       })
       .instruction();
@@ -84,7 +93,7 @@ describe("solana-raffles", () => {
     transaction.add(instruction);
 
     const tx = await program.provider.sendAndConfirm(transaction, [
-      authority,
+
       ticket,
       participant,
     ]);

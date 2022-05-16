@@ -45,6 +45,10 @@
         {
           "name": "winners",
           "type": "u8"
+        },
+        {
+          "name": "requiresAuthor",
+          "type": "u8"
         }
       ]
     },
@@ -145,6 +149,10 @@
           {
             "name": "winners",
             "type": "u8"
+          },
+          {
+            "name": "requiresAuthor",
+            "type": "u8"
           }
         ]
       }
@@ -176,6 +184,11 @@
       "code": 6001,
       "name": "InputError",
       "msg": "Input Error"
+    },
+    {
+      "code": 6002,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
     }
   ],
   "metadata": {
