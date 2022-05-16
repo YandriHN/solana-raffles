@@ -11,6 +11,8 @@ const Create: NextPage = () => {
   const [description, setDescription] = useState<string>("");
   const [token, setToken] = useState<string>("");
   const [fee, setFee] = useState<number>(0);
+  const [winners, setWinners] = useState<number>(1);
+  const [image, setImage] = useState<string>('');
 
   const wallet = useAnchorWallet();
   const program = useContext(ContractContext);
@@ -35,24 +37,27 @@ const Create: NextPage = () => {
       
       );
 
-      const blockhash = await program.connection.getLatestBlockhash('confirmed');
-      console.log(await (program.connection.getBalance(wallet.publicKey, 'finalized')));
-
-      console.log('Blockhash:', blockhash.blockhash.toString())
+      const blockhash = await program.connection.getLatestBlockhash('finalized');
 
       const transaction = new Transaction({
-        feePayer: wallet.publicKey,
-        recentBlockhash: blockhash.blockhash
+        lastValidBlockHeight: blockhash.lastValidBlockHeight,
+        blockhash: blockhash.blockhash,
+        feePayer: wallet.publicKey
       });
       
       transaction.add(instruction);
       transaction.sign(raffle);
+
+
       const signed = await wallet.signTransaction(transaction);
-      const signature = await program.connection.sendRawTransaction(
-        signed.serialize(),
-        { skipPreflight: false }
-      );
-      await program.connection.confirmTransaction(signature, "single");
+      const signature = await program.connection.sendRawTransaction(signed.serialize());
+
+      await program.connection.confirmTransaction({
+        blockhash: blockhash.blockhash,
+        lastValidBlockHeight: blockhash.lastValidBlockHeight,
+        signature: signature
+      });
+
     } catch (err: any) {
       console.log("Error sending transaction");
       console.log(err);
@@ -62,6 +67,8 @@ const Create: NextPage = () => {
   return (
     <div className={styles.container}>
       <h2>Create a Raffle</h2>
+
+      <div className={styles.form}>
   
         <label>
           Title
@@ -91,7 +98,17 @@ const Create: NextPage = () => {
           Entry Fee:
           <input type="number" placeholder="0.000" value={fee} onChange={(e) => setFee(e.target.valueAsNumber)} />
         </label>
+        <label>
+          Amount of Winners:
+          <input type="number" placeholder="1" value={winners} onChange={(e) => setWinners(e.target.valueAsNumber)} />
+        </label>
+        <label>
+          Image:
+          <input type="text" placeholder="https://my.image.com/" value={image} onChange={(e) => setImage(e.target.value)} />
+        </label>
         <input type="submit" value="Create Raffle" onClick={handleCreate}/>
+
+        </div>
   
     </div>
   );

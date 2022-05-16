@@ -26,3 +26,38 @@ export const createRaffle = async (
     })
     .instruction();
 }
+
+export const closeRaffle = async (
+    program: Program<SolanaRaffles>,
+    authority: PublicKey,
+    raffle: PublicKey
+) => {
+    return await program.methods
+    .endRaffle()
+    .accounts({
+        raffle: raffle,
+        authority: authority
+    })
+    .instruction();
+}
+
+export const purchaseTicket = async (
+    program: Program<SolanaRaffles>,
+    authority: PublicKey,
+    participant: PublicKey,
+    raffle: PublicKey,
+    ticket: PublicKey
+
+
+) => {
+    return await program.methods
+    .purchaseTicket()
+    .accounts({
+        authority: authority,
+        participant: participant,
+        raffle: raffle,
+        ticket: ticket,
+        systemProgram: SystemProgram.programId
+    })
+    .instruction();
+}
