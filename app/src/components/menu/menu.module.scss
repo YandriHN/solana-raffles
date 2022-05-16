@@ -1,0 +1,62 @@
+@import "../../../styles//variables.scss";
+
+.container {
+  img {
+    float: left;
+    height: 40px;
+    margin: 10px 0;
+    @media only screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+  i {
+    font-style: normal;
+    @media only screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+  h1 {
+    float: left;
+    height: 60px;
+    margin: 0;
+    line-height: 60px;
+    @media only screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+  span {
+    line-height: 60px;
+    float: right;
+    margin: 0 20px;
+  }
+  .links {
+    float: right;
+    margin-right: 20px;
+    @media only screen and (max-width: 800px) {
+      float: left;
+      margin-right: 0;
+    }
+    .link {
+      display: inline-block;
+      line-height: 60px;
+      margin: 0 20px;
+      font-weight: 600;
+      cursor: pointer;
+      color: $cream;
+      transition: 0.3s;
+      text-decoration: underline;
+    }
+    .link:hover {
+      opacity: 0.4;
+    }
+  }
+  button {
+    float: right;
+    height: 60px;
+  }
+  width: 100%;
+  border-bottom: 1px solid $cream;
+  height: 100px;
+  padding: 20px 0;
+  margin-bottom: 60px;
+}
