@@ -1,7 +1,10 @@
 
 .anchor
 .DS_Store
-target
+programs/**/target
+target/*
+!target/idl
+!target/types
 **/*.rs.bk
 node_modules
 test-ledger
