@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { ContractContext } from "../src/context/contract";
 import { createRaffle } from "../src/utils/instructions";
 import styles from "../styles/create.module.scss";
-import { Keypair, Transaction } from "@solana/web3.js";
+import { Keypair, Transaction, PublicKey } from "@solana/web3.js";
 import ImageUploader from "../src/components/ImageUploader";
 import Loading from "../src/components/loading";
 import toast from "react-hot-toast";
@@ -88,6 +88,12 @@ const Create: NextPage = () => {
         return;
       };
 
+      if(!token) {
+        toast.error('No Token Selected');
+        setLoading(false);
+        return;
+      };
+
       const { now, ends } = getEndFromDates(date, time);
 
       if(now > ends) {
@@ -95,6 +101,7 @@ const Create: NextPage = () => {
         setLoading(false);
         return;
       }
+
 
       const image_url: string = image == '' ? 'https://i.ibb.co/whcrbrJ/blank.png' : await uploadImage(image);
 
@@ -108,7 +115,8 @@ const Create: NextPage = () => {
         wallet.publicKey,
         raffle.publicKey,
         image_url,
-        winners
+        winners,
+        new PublicKey(token)
       );
 
       const blockhash = await program.connection.getLatestBlockhash('finalized');

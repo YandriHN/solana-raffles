@@ -25,6 +25,7 @@ type RaffleType = {
   ends: number;
   image: string;
   winners: number;
+  token: PublicKey;
 };
 
 const Raffle: NextPage = () => {
@@ -57,7 +58,8 @@ const Raffle: NextPage = () => {
         description: raffle.description,
         ends: raffle.ends.toNumber(),
         image: raffle.image,
-        winners: Number(raffle.winners)
+        winners: Number(raffle.winners),
+        token: raffle.token
       });
       setLoading(false);
     } catch {
@@ -130,7 +132,8 @@ const Raffle: NextPage = () => {
         data.authority,
         wallet.publicKey,
         new PublicKey(rid),
-        ticket.publicKey
+        ticket.publicKey,
+        data.token
       );
       transaction.add(instruction);
       transaction.sign(ticket);
