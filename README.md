@@ -10,8 +10,8 @@ Solana raffle system with support for custom SPL Tokens
 
 ## 
  
- - [Official Deployments](https://github.com/dynaris/solana-raffles)
- - [Deploy Your Own Version](https://github.com/dynaris/solana-raffles)
+ - [Official Deployments](https://github.com/dynaris/solana-raffles#official-deployments)
+ - [Deploy Your Own Version](https://github.com/dynaris/solana-raffles#deploy-your-own-version)
  - [Docs](https://github.com/dynaris/solana-raffles)
 
 
@@ -41,7 +41,7 @@ Starting the UI
 
 ### Front End
 
-https://raffles.daoify.tech
+https://raffles.dynaris.xyz
 
 ### Contract
 
