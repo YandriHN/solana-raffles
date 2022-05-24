@@ -6,6 +6,8 @@
 
 Solana raffle system with support for custom SPL Tokens
 
+(This is still a work in progress, and some broken features, and others that are yet to be completed)
+
 **There is currenly no escrow system in place as this system was designed for whitelist giveaways in trusted communities**
 
 ## 
