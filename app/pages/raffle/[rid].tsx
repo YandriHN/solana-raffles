@@ -98,7 +98,7 @@ const Raffle: NextPage = () => {
     if(tickets.length == 0) return alert('No entries');
     setWinners(
       tickets.map((ticket) => (
-        <div className={styles.winner}>
+        <div className={styles.winner} key={ticket.publicKey.toString()}>
           {ticket.account.participant.toString()}
         </div>
       ))

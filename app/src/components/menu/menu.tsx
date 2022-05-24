@@ -28,7 +28,7 @@ export const Menu: FC = () => {
       
       <div className={styles.links}>
         {links.map((link) => (
-          <div className={styles.link} onClick={() => router.push(link.value.toString())}>
+          <div className={styles.link} onClick={() => router.push(link.value.toString())} key={link.value}>
             {link.name}
           </div>
         ))}
