@@ -14,6 +14,7 @@ import {
 import { clusterApiUrl } from "@solana/web3.js";
 import { AppProps } from "next/app";
 import { FC, useMemo } from "react";
+import { Toaster } from "react-hot-toast";
 import { Menu } from "../src/components/menu/menu";
 import { ContractProvider } from "../src/context/contract";
 
@@ -47,6 +48,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
           <ContractProvider>
+            <Toaster/>
             <Menu />
             <Component {...pageProps} />
           </ContractProvider>

@@ -37,6 +37,18 @@
         {
           "name": "description",
           "type": "string"
+        },
+        {
+          "name": "image",
+          "type": "string"
+        },
+        {
+          "name": "winners",
+          "type": "u8"
+        },
+        {
+          "name": "requiresAuthor",
+          "type": "u8"
         }
       ]
     },
@@ -86,6 +98,22 @@
         }
       ],
       "args": []
+    },
+    {
+      "name": "closeTicketAccount",
+      "accounts": [
+        {
+          "name": "participant",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -113,6 +141,18 @@
           {
             "name": "description",
             "type": "string"
+          },
+          {
+            "name": "image",
+            "type": "string"
+          },
+          {
+            "name": "winners",
+            "type": "u8"
+          },
+          {
+            "name": "requiresAuthor",
+            "type": "u8"
           }
         ]
       }
@@ -144,6 +184,11 @@
       "code": 6001,
       "name": "InputError",
       "msg": "Input Error"
+    },
+    {
+      "code": 6002,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
     }
   ],
   "metadata": {

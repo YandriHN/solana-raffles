@@ -10,6 +10,7 @@ type RaffleType = {
         title: string;
         description: string;
         fee: number;
+        image: string;
     }
     publicKey: PublicKey
 }
@@ -23,8 +24,8 @@ const Raffle: FC<RaffleType> = ({ account, publicKey }) => {
             <div className={styles.title}>
                 {account.title}
             </div>
-            <div className={styles.body}>
-                {account.description}
+            <div className={styles.image}>
+                <img src={account.image} draggable={false}/>
             </div>
             <div className={styles.footer_button} onClick={() => router.push(`/raffle/${publicKey.toString()}`)}>
                 MORE INFO

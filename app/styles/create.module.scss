@@ -95,5 +95,19 @@
     font-family: $font;
   }
 
+  input[type="file"] {
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+    background-color: $cream;
+    color: $dusk;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: $font;
+  }
+
 }
 

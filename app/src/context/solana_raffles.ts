@@ -37,6 +37,18 @@ export type SolanaRaffles = {
         {
           "name": "description",
           "type": "string"
+        },
+        {
+          "name": "image",
+          "type": "string"
+        },
+        {
+          "name": "winners",
+          "type": "u8"
+        },
+        {
+          "name": "requiresAuthor",
+          "type": "u8"
         }
       ]
     },
@@ -86,6 +98,22 @@ export type SolanaRaffles = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "closeTicketAccount",
+      "accounts": [
+        {
+          "name": "participant",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -113,6 +141,18 @@ export type SolanaRaffles = {
           {
             "name": "description",
             "type": "string"
+          },
+          {
+            "name": "image",
+            "type": "string"
+          },
+          {
+            "name": "winners",
+            "type": "u8"
+          },
+          {
+            "name": "requiresAuthor",
+            "type": "u8"
           }
         ]
       }
@@ -144,6 +184,11 @@ export type SolanaRaffles = {
       "code": 6001,
       "name": "InputError",
       "msg": "Input Error"
+    },
+    {
+      "code": 6002,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
     }
   ]
 };
@@ -187,6 +232,18 @@ export const IDL: SolanaRaffles = {
         {
           "name": "description",
           "type": "string"
+        },
+        {
+          "name": "image",
+          "type": "string"
+        },
+        {
+          "name": "winners",
+          "type": "u8"
+        },
+        {
+          "name": "requiresAuthor",
+          "type": "u8"
         }
       ]
     },
@@ -236,6 +293,22 @@ export const IDL: SolanaRaffles = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "closeTicketAccount",
+      "accounts": [
+        {
+          "name": "participant",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "ticket",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -263,6 +336,18 @@ export const IDL: SolanaRaffles = {
           {
             "name": "description",
             "type": "string"
+          },
+          {
+            "name": "image",
+            "type": "string"
+          },
+          {
+            "name": "winners",
+            "type": "u8"
+          },
+          {
+            "name": "requiresAuthor",
+            "type": "u8"
           }
         ]
       }
@@ -294,6 +379,11 @@ export const IDL: SolanaRaffles = {
       "code": 6001,
       "name": "InputError",
       "msg": "Input Error"
+    },
+    {
+      "code": 6002,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
     }
   ]
 };

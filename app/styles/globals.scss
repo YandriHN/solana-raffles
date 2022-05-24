@@ -34,7 +34,7 @@ a {
 
 hr {
   border:none;
-  border-bottom: 1px solid  $cream;
+  border-bottom: 3px solid  $cream;
   margin: 20px 0;
 }
 button {
@@ -48,6 +48,14 @@ button {
   font-weight: 600;
   border-radius: 5px;
   font-family: $font;
+  user-select: none;
+  &.selected {
+
+    outline: 3px solid $blue;
+    outline-offset: 2px;
+
+    
+  }
 }
 button:hover {
   background-color: $cream_hover;
@@ -55,4 +63,31 @@ button:hover {
 button:disabled {
   opacity: .7;
   cursor:not-allowed;
+}
+.button_danger {
+  background-color: $red;
+}
+.button_danger:hover {
+  background-color: $red_hover;
+}
+.input_as_button {
+  width:100px!important;
+  font-size: 14px !important;
+  display: inline-block;
+  margin:0 !important;
+  margin-right:10px !important;
+  padding:10px 15px !important;
+  background-color: $cream !important;
+  color: $dusk !important;
+  border:none !important;
+  outline:none !important;
+  font-weight: 600 !important;
+  border-radius: 5px !important;
+  font-family: $font !important;
+  user-select: none !important;
+}
+
+label {
+  overflow: hidden;
+  height:60px;
 }

@@ -1,6 +1,44 @@
 @import '../styles/variables.scss';
 
 .container {
+
+    .title {
+        h1 {
+            margin: 15px 0;
+            img {
+                height:20px;
+                margin-right:10px;
+                cursor: pointer;
+                &:hover {
+                    opacity: .6;
+                }
+            }
+        }
+        p {
+            margin:0;
+            margin-bottom:10px;
+            font-size: 12px;
+            line-height:12px;
+            i {
+                font-style: normal;
+                opacity: .5;
+            }
+        }
+        .tools {
+            height:80px;
+            line-height:80px;
+            text-align: right;
+            float:right;
+            @media only screen and (max-width: 800px) {
+                width:100%;
+                text-align: left;
+                float:none;
+                margin-bottom:15px;
+            }
+        }
+
+    }
+
     .draw {
 
         overflow: hidden;
@@ -16,10 +54,10 @@
             margin:40px 0;
         }
         .winner {
-            padding: 30px 10px;
+            padding: 30px 15px;
             background-color: rgba(0, 0, 0, 0.308);
             margin:5px 0;
-            border-radius: 2px;
+            border-radius: 5px;
         }
     }
 
@@ -28,34 +66,49 @@
         margin-bottom: 50px;
         display: inline-block;
     }
-    .tools {
-        height:80px;
-        line-height:80px;
-        text-align: right;
-        float:right;
-    }
     .content {
         width:100%;
-        .description {
+
+        .image {
             @media only screen and (max-width: 800px) {
                 width:100%;
             }
             box-sizing: border-box;
             padding-left:10px;
             width:50%;
-            float:right;
-            text-overflow:clip;
-            
+            display: inline-block;
+            img {
+                border-radius: 10px;
+            }
         }
-        .actions {
+
+        .description {
+            box-sizing: border-box;
+            font-size: 20px;
+            width:50%;
             @media only screen and (max-width: 800px) {
                 width:100%;
             }
+            p {
+                opacity: .6;
+            }
+        };
+        
+        .actions {
+            &.disabled {
+                opacity: .4;
+                pointer-events: none;
+                user-select: none;
+            }
+            @media only screen and (max-width: 800px) {
+                width:100%;
+            }
+            vertical-align: top;
             box-sizing: border-box;
             margin-bottom:50px;
             padding-right:10px;
             width:50%;
-            float:left;
+            display: inline-block;
             .selector {
                 width:100%;
                 h3 {

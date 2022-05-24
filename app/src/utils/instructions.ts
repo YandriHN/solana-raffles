@@ -7,18 +7,25 @@ export const createRaffle = async (
     fee: number,
     title: string,
     description: string,
-    token: string,
     ends: number,
     authority: PublicKey,
-    raffle: PublicKey
+    raffle: PublicKey,
+    image: string,
+    winners: number,
 ) => {
     return await program.methods
     .createRaffle(
         new BN(fee),
         new BN(ends),
         title,
-        description
-    )
+        description,
+        image,
+        winners <= 0 ? 1 : winners,
+        0, // requiures authority
+        //token account,
+        //fee,
+        //fee for me hehe
+    ) 
     .accounts({
         raffle: raffle,
         authority: authority,
@@ -47,13 +54,11 @@ export const purchaseTicket = async (
     participant: PublicKey,
     raffle: PublicKey,
     ticket: PublicKey
-
-
 ) => {
     return await program.methods
     .purchaseTicket()
     .accounts({
-        authority: authority,
+        authority: participant,
         participant: participant,
         raffle: raffle,
         ticket: ticket,

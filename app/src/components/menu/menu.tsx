@@ -1,4 +1,5 @@
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import styles from "./menu.module.scss";
@@ -19,7 +20,7 @@ export const Menu: FC = () => {
   return (
     <div className={styles.container}>
       {/* <img src={"/logo.svg"}/> <i>&nbsp;Raffles</i> */}
-      <h1>Solana Raffles</h1>
+      <Link href='/'><h1>Solana Raffles</h1></Link>
    
    <div className={styles.wallet_button}>
      <WalletMultiButton />
