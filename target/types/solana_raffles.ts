@@ -16,6 +16,21 @@ export type SolanaRaffles = {
           "isSigner": true
         },
         {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -58,6 +73,11 @@ export type SolanaRaffles = {
         {
           "name": "authority",
           "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "needSigner",
+          "isMut": false,
           "isSigner": true
         },
         {
@@ -76,7 +96,37 @@ export type SolanaRaffles = {
           "isSigner": true
         },
         {
+          "name": "participantAta",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authorityAta",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
           "isMut": false,
           "isSigner": false
         }
@@ -131,10 +181,6 @@ export type SolanaRaffles = {
             "type": "i64"
           },
           {
-            "name": "price",
-            "type": "u64"
-          },
-          {
             "name": "title",
             "type": "string"
           },
@@ -153,6 +199,14 @@ export type SolanaRaffles = {
           {
             "name": "requiresAuthor",
             "type": "u8"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "token",
+            "type": "publicKey"
           }
         ]
       }
@@ -211,6 +265,21 @@ export const IDL: SolanaRaffles = {
           "isSigner": true
         },
         {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -253,6 +322,11 @@ export const IDL: SolanaRaffles = {
         {
           "name": "authority",
           "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "needSigner",
+          "isMut": false,
           "isSigner": true
         },
         {
@@ -271,7 +345,37 @@ export const IDL: SolanaRaffles = {
           "isSigner": true
         },
         {
+          "name": "participantAta",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authorityAta",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
           "isMut": false,
           "isSigner": false
         }
@@ -326,10 +430,6 @@ export const IDL: SolanaRaffles = {
             "type": "i64"
           },
           {
-            "name": "price",
-            "type": "u64"
-          },
-          {
             "name": "title",
             "type": "string"
           },
@@ -348,6 +448,14 @@ export const IDL: SolanaRaffles = {
           {
             "name": "requiresAuthor",
             "type": "u8"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "token",
+            "type": "publicKey"
           }
         ]
       }

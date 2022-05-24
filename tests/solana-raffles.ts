@@ -1,8 +1,10 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { SolanaRaffles, IDL } from "../target/types/solana_raffles";
-import { airdrop, log } from "./utils";
+import { airdrop, getAtaForMint, getRawTokenAccount, log, mintNFT } from "./utils";
 import idl from '../target/idl/solana_raffles.json';
+import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { PublicKey, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
 
 const programId = '4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf'
 
@@ -13,6 +15,9 @@ describe("solana-raffles", () => {
 
   let authority = anchor.web3.Keypair.generate();
   let participant = anchor.web3.Keypair.generate();
+
+  let tokenMint: PublicKey = null;
+  let participantMintAta: PublicKey = null;
 
   before("initialize client", async () => {
     await airdrop(authority.publicKey, program.provider.connection);
@@ -25,12 +30,24 @@ describe("solana-raffles", () => {
     `,
       "blue"
     );
+
+    const token = await mintNFT(
+      program.provider,
+      participant,
+      participant,
+      participant,
+      10000
+    );
+
+    tokenMint = token.tokenMint;
+    participantMintAta = token.payerAta;
+
   });
 
   it("create raffle", async () => {
     let raffle = anchor.web3.Keypair.generate();
 
-    let ticket_price = new anchor.BN(0.1 * anchor.web3.LAMPORTS_PER_SOL);
+    let ticket_price = new anchor.BN(1000);
     let ends = new anchor.BN(Date.now() / 1000 + 5); // ends in 5 seconds
     
     let title = 'Okay Bears Giveaway 🎉';
@@ -47,12 +64,15 @@ describe("solana-raffles", () => {
         description,
         image,
         winners,
-        1
+        0
       )
       .accounts({
         raffle: raffle.publicKey,
         authority: authority.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        tokenMint: tokenMint
       })
       .instruction();
 
@@ -78,22 +98,31 @@ describe("solana-raffles", () => {
     let ticket = anchor.web3.Keypair.generate();
     let raffle = (await program.account.raffle.all())[0];
 
+    const [authAta, _1] = await getAtaForMint(authority.publicKey, tokenMint);
+    const [partAta, _2] = await getAtaForMint(participant.publicKey, tokenMint);
+
     const instruction = await program.methods
       .purchaseTicket()
       .accounts({
         raffle: raffle.publicKey,
         ticket: ticket.publicKey,
         participant: participant.publicKey,
-        authority: participant.publicKey,
+        authority: authority.publicKey,
         systemProgram: anchor.web3.SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+        tokenMint: tokenMint,
+        authorityAta: authAta,
+        participantAta: partAta,
+        rent: SYSVAR_RENT_PUBKEY
       })
       .instruction();
 
     const transaction = new anchor.web3.Transaction();
     transaction.add(instruction);
 
-    const tx = await program.provider.sendAndConfirm(transaction, [
 
+    const tx = await program.provider.sendAndConfirm(transaction, [
       ticket,
       participant,
     ]);
@@ -103,6 +132,8 @@ describe("solana-raffles", () => {
     Created Ticket
     Signature: ${tx}
     Ticket ID: ${ticket.publicKey.toString()}
+    Participant Balance: ${(await getRawTokenAccount(program.provider, partAta)).amount.toString()}
+    Manager Balance: ${(await getRawTokenAccount(program.provider, authAta)).amount.toString()}
     `,
       "blue"
     );
