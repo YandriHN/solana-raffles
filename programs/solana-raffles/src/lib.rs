@@ -1,4 +1,7 @@
 use anchor_lang::prelude::*;
+use anchor_spl::token::{self};
+use anchor_spl::associated_token::AssociatedToken;
+use anchor_spl::token::{Mint, Token, TokenAccount};
 
 declare_id!("4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf");
 
@@ -20,6 +23,9 @@ pub mod solana_raffles {
         if ![0,1].contains(&requires_author) {
             return Err(RaffleError::InputError.into())
         }
+        if image.chars().count() > 50 {
+            return Err(RaffleError::InputError.into())
+        }
         if title.chars().count() > 50 {
             return Err(RaffleError::InputError.into())
         }
@@ -36,25 +42,45 @@ pub mod solana_raffles {
         raffle.image = image;
         raffle.winners = winners;
         raffle.requires_author = requires_author;
+        raffle.token = ctx.accounts.token_mint.key();
         Ok(())
     }
 
-    pub fn purchase_ticket(ctx: Context<CreateTicket>) -> Result<()> {
+    pub fn purchase_ticket(
+        ctx: Context<CreateTicket>
+    ) -> Result<()> {
 
         let clock: Clock = Clock::get().unwrap();
         let raffle  = &ctx.accounts.raffle;
 
+        require_keys_eq!(
+            ctx.accounts.raffle.authority,
+            ctx.accounts.authority.key(),
+            RaffleError::Unauthorized
+        );
+
         if raffle.requires_author == 1 {
             require_keys_eq!(
                 ctx.accounts.raffle.authority,
-                ctx.accounts.authority.key(),
+                ctx.accounts.need_signer.key(),
                 RaffleError::Unauthorized
             );
-        }
+        };
 
         if raffle.ends < clock.unix_timestamp {
             return Err(RaffleError::RaffleEnded.into());
-        }
+        };
+
+        let token_ctx = CpiContext::new(
+            ctx.accounts.token_program.to_account_info(),
+            token::Transfer {
+                authority: ctx.accounts.participant.to_account_info(),
+                from: ctx.accounts.participant_ata.to_account_info(),
+                to: ctx.accounts.authority_ata.to_account_info(),
+            },
+        );
+
+        token::transfer(token_ctx, raffle.price)?; 
 
         let ticket = &mut ctx.accounts.ticket;
         ticket.raffle = ctx.accounts.raffle.key();
@@ -81,12 +107,23 @@ pub struct CreateRaffle<'info> {
     )]
     pub raffle: Box<Account<'info, Raffle>>,
 
+    pub token_mint: Account<'info, Mint>,
+    pub token_program: Program<'info, Token>,
+
+    pub associated_token_program: Program<'info, AssociatedToken>,
+
     pub system_program: Program<'info, System>,
+
 }
 
 #[derive(Accounts)]
 pub struct CreateTicket<'info> {
-    pub authority: Signer<'info>,
+    
+    /// CHECK: we good
+    pub authority: AccountInfo<'info>,
+
+    pub need_signer: Signer<'info>,
+
     #[account(mut)]
     pub participant: Signer<'info>,
 
@@ -100,7 +137,24 @@ pub struct CreateTicket<'info> {
     )]
     pub ticket: Box<Account<'info, Ticket>>,
 
+    #[account(mut)]
+    pub participant_ata: Account<'info, TokenAccount>,
+
+    #[account(
+        init_if_needed,
+        payer = participant,
+        associated_token::mint = token_mint,
+        associated_token::authority = authority,
+    )]
+    pub authority_ata: Account<'info, TokenAccount>,
+
+    pub token_mint: Account<'info, Mint>,
+    pub token_program: Program<'info, Token>,
+
+    pub associated_token_program: Program<'info, AssociatedToken>,
+
     pub system_program: Program<'info, System>,
+    pub rent: Sysvar<'info, Rent>,
 }
 
 #[derive(Accounts)]
@@ -131,7 +185,6 @@ pub struct CloseTicketAccount<'info> {
 pub struct Raffle {
     pub authority: Pubkey,
     pub ends: i64,
-    pub price: u64,
 
     pub title: String, // 50 * 4
     pub description: String, // 100 * 4
@@ -139,7 +192,10 @@ pub struct Raffle {
 
     pub winners: u8, //
 
-    pub requires_author: u8
+    pub requires_author: u8,
+
+    pub price: u64,
+    pub token: Pubkey,
 }
 
 #[account]
@@ -149,7 +205,7 @@ pub struct Ticket {
 }
 
 impl Raffle {
-    pub const LEN: usize = 32 + 16 + 8 + (50 * 4) + (100 * 4) + (100 * 4) + 1 + 8;
+    pub const LEN: usize = 32  + 8 + (50 * 4) + (100 * 4) + (100 * 4) + 1 + 8 + 16 + 1 + 32;
 }
 
 impl Ticket {
