@@ -10,6 +10,7 @@ import Loading from "../src/components/loading";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Popup from "../src/components/popup";
+import Head from "next/head";
 
 
 const Create: NextPage = () => {
@@ -65,6 +66,12 @@ const Create: NextPage = () => {
     try {
       if (!program) return console.log('No Program');
       if (!wallet) return console.log('No wallet connected');
+
+      if(!customToken) {
+        toast.error('SOL is currently unsupported');
+        setLoading(false);
+        return;
+      }
 
       if(!time) {
         toast.error('No End Time Selected');
@@ -157,6 +164,11 @@ const Create: NextPage = () => {
 
   return (
     <div className={styles.container}>
+
+      <Head>
+        <title>Create Raffle | DAOify Raffles</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
 
       <Popup
         title={'SELECT CUSTOM TOKEN'}

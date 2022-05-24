@@ -13,6 +13,7 @@ import {
 } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import { AppProps } from "next/app";
+import Head from "next/head";
 import { FC, useMemo } from "react";
 import { Toaster } from "react-hot-toast";
 import { Menu } from "../src/components/menu/menu";

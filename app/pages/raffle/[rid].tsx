@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import Countdown from "react-countdown";
 import Loading from "../../src/components/loading";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Head from "next/head";
 
 
 
@@ -235,6 +236,17 @@ const Raffle: NextPage = () => {
     <h2>Loading...</h2>
   ) : data ? (
     <div className={styles.container}>
+
+      <Head>
+        
+        <title>{data ? data.title : 'Raffle'}</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+
+          <meta property="og:description" content={data ? data.description : 'Raffles On Solana'}></meta>
+
+          <meta property="og:image" content={data ? data.image : 'https://i.ibb.co/whcrbrJ/blank.png'}></meta>
+
+      </Head>
 
       <Loading loading={waiting}/>
 
