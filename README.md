@@ -50,7 +50,7 @@ https://raffles.dynaris.xyz
 Mainnet
 
 ```
-NOT YET DEPLOYED
+51cc35jbkQ8oaJXiYmKaeWEaiucmSunoTRMjAGUyaTGC
 ```
 
 Devnet
