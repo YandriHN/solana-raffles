@@ -9,11 +9,13 @@ import styles from "../../styles/raffle.module.scss";
 import toast from "react-hot-toast";
 import Countdown from "react-countdown";
 import Loading from "../../src/components/loading";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import Head from "next/head";
-import { getPriceWithDecimal, getTokenInfo, TokenDataType } from "../../src/utils/tokeninfo";
-
-
+import {
+  getPriceWithDecimal,
+  getTokenInfo,
+  TokenDataType,
+} from "../../src/utils/tokeninfo";
 
 type LocalRaffleInformation = {
   purchasedTickets: number;
@@ -51,14 +53,13 @@ const Raffle: NextPage = () => {
   const [tokenInfo, setTokenInfo] = useState<TokenDataType | null>(null);
 
   useEffect(() => {
-    if(!data) return;
+    if (!data) return;
     const x = async () => {
       const tokenInfo = await getTokenInfo(data.token);
       setTokenInfo(tokenInfo);
     };
     x();
-  }, [data])
-
+  }, [data]);
 
   const getAndSetRaffle = async () => {
     if (!program || !rid) return;
@@ -74,7 +75,7 @@ const Raffle: NextPage = () => {
         image: raffle.image,
         winners: Number(raffle.winners),
         token: raffle.token,
-        price: raffle.price.toNumber()
+        price: raffle.price.toNumber(),
       });
       setLoading(false);
     } catch {
@@ -110,7 +111,7 @@ const Raffle: NextPage = () => {
       .sort(() => Math.random() - Math.random())
       .slice(0, data.winners <= 0 ? 1 : data.winners);
 
-    if(tickets.length == 0) return alert('No entries');
+    if (tickets.length == 0) return alert("No entries");
     setWinners(
       tickets.map((ticket) => (
         <div className={styles.winner} key={ticket.publicKey.toString()}>
@@ -182,11 +183,11 @@ const Raffle: NextPage = () => {
         })
       );
 
-      toast.success('Purchased Ticket');
+      toast.success("Purchased Ticket");
 
       setWaiting(false);
     } catch (err: any) {
-      toast.error('Error purchasing ticket');
+      toast.error("Error purchasing ticket");
       setWaiting(false);
       console.log("Error sending transaction");
       console.log(err);
@@ -229,12 +230,11 @@ const Raffle: NextPage = () => {
         signature: signature,
       });
 
-      toast.success('Closed Raffle');
+      toast.success("Closed Raffle");
       setWaiting(false);
       setData(null);
-
     } catch (err: any) {
-      toast.error('Error Closing Raffle');
+      toast.error("Error Closing Raffle");
       setWaiting(false);
       console.log("Error sending transaction");
       console.log(err);
@@ -250,50 +250,61 @@ const Raffle: NextPage = () => {
     <h2>Loading...</h2>
   ) : data ? (
     <div className={styles.container}>
-
       <Head>
         
-        <title>{data ? data.title : 'Raffle'}</title>
-          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta
+          property="og:image"
+          content={data.image}
+          key="ogimg"
+        ></meta>
 
-          <meta property="og:description" content={data ? data.description : 'Raffles On Solana'}></meta>
-
-          <meta property="og:image" content={data ? data.image : 'https://i.ibb.co/whcrbrJ/blank.png'}></meta>
-
+        <meta
+          property="og:title"
+          content={data.title}
+          key="ogtitle"
+        />
+        <meta
+          property="og:description"
+          content={data.description}
+          key="ogdesc"
+        />
       </Head>
 
-      <Loading loading={waiting}/>
+      <Loading loading={waiting} />
 
       <div className={styles.title}>
         <h1>
           <CopyToClipboard text={window.location.href}>
-            <img src={'/link.svg'} onClick={() => toast.success('Copied to Clipboard')}/>
+            <img
+              src={"/link.svg"}
+              onClick={() => toast.success("Copied to Clipboard")}
+            />
           </CopyToClipboard>
           {data.title}
         </h1>
         &nbsp; | &nbsp;
         <span>
           {/* @ts-ignore */}
-          <Countdown date={data.ends * 1000}/>
+          <Countdown date={data.ends * 1000} />
         </span>
-
         {data.authority &&
           wallet &&
           data.authority.toString() == wallet.publicKey.toString() && (
             <div className={styles.tools}>
               <button onClick={() => handleDraw()}>Draw Raffle</button>
-              <button className="button_danger" onClick={() => handleClose()}>Close Raffle</button>
+              <button className="button_danger" onClick={() => handleClose()}>
+                Close Raffle
+              </button>
             </div>
           )}
-
         <p>
           <b>Creator:</b> &nbsp;
           <i>
-          {data.authority.toString().substring(0, 3) +
-            "..." +
-            data.authority
-              .toString()
-              .substring(data.authority.toString().length - 3)}
+            {data.authority.toString().substring(0, 3) +
+              "..." +
+              data.authority
+                .toString()
+                .substring(data.authority.toString().length - 3)}
           </i>
         </p>
       </div>
@@ -310,16 +321,24 @@ const Raffle: NextPage = () => {
               <hr />
             </div>
           )}
-        <div className={`${styles.actions} ${(Date.now() / 1000 > data.ends) && styles.disabled}`}>
+        <div
+          className={`${styles.actions} ${
+            Date.now() / 1000 > data.ends && styles.disabled
+          }`}
+        >
           <h2>Purchase Tickets</h2>
           <p>
-            Ticket Price: &nbsp; <b>{ tokenInfo ? (
-            <>
-              {getPriceWithDecimal(tokenInfo, data.price)}
-              &nbsp;
-              ${tokenInfo.symbol}
-            </>
-              ): 0}</b>
+            Ticket Price: &nbsp;{" "}
+            <b>
+              {tokenInfo ? (
+                <>
+                  {getPriceWithDecimal(tokenInfo, data.price)}
+                  &nbsp; ${tokenInfo.symbol}
+                </>
+              ) : (
+                0
+              )}
+            </b>
           </p>
           <p>
             Current Tickets: &nbsp; <b>{purchasedTickets}</b>
@@ -356,12 +375,11 @@ const Raffle: NextPage = () => {
           <img src={data.image} width="100%" />
         </div>
 
-        <hr style={{opacity:'.2', borderWidth:'5px'}}/> 
+        <hr style={{ opacity: ".2", borderWidth: "5px" }} />
 
         <div className={styles.description}>
           <h2>About: </h2>
-          <p>
-          {data.description}</p>
+          <p>{data.description}</p>
         </div>
       </div>
     </div>
