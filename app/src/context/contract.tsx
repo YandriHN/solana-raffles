@@ -14,10 +14,11 @@ type WorkSpace = {
 
 export const ContractContext = createContext<WorkSpace | null>(null);
 
+
 const preflightCommitment = "processed";
 const commitment = "processed";
 const programID = new PublicKey(idl.metadata.address);
-const connection = new Connection('https://api.devnet.solana.com/');
+const connection = new Connection('https://ssc-dao.genesysgo.net/');
 
 export const ContractProvider: FC<any> = ({ children }) => {
   const wallet: any = useAnchorWallet();

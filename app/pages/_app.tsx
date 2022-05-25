@@ -23,8 +23,9 @@ require("@solana/wallet-adapter-react-ui/styles.css");
 require("../styles/globals.scss");
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
-  const network = WalletAdapterNetwork.Devnet;
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+
+  const network = WalletAdapterNetwork.Mainnet;
+  const endpoint = 'https://ssc-dao.genesysgo.net/'
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
@@ -35,6 +36,7 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     ],
     [network]
   );
+
 
   return (
     <ConnectionProvider endpoint={endpoint}>
