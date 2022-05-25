@@ -1,9 +1,10 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self};
 use anchor_spl::associated_token::AssociatedToken;
-use anchor_spl::token::{Mint, Token, TokenAccount};
+use anchor_spl::token::*;
 
 declare_id!("4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf");
+
 
 #[program]
 pub mod solana_raffles {
@@ -19,6 +20,7 @@ pub mod solana_raffles {
         winners:u8,
         requires_author: u8,
     ) -> Result<()> {
+
 
         if ![0,1].contains(&requires_author) {
             return Err(RaffleError::InputError.into())
@@ -52,6 +54,18 @@ pub mod solana_raffles {
 
         let clock: Clock = Clock::get().unwrap();
         let raffle  = &ctx.accounts.raffle;
+
+        require_keys_eq!(
+            ctx.accounts.raffle.authority,
+            ctx.accounts.authority_ata.owner,
+            RaffleError::Unauthorized
+        );
+
+        require_keys_eq!(
+            ctx.accounts.raffle.token,
+            ctx.accounts.token_mint.key(),
+            RaffleError::Unauthorized
+        );
 
         require_keys_eq!(
             ctx.accounts.raffle.authority,
@@ -118,7 +132,7 @@ pub struct CreateRaffle<'info> {
 
 #[derive(Accounts)]
 pub struct CreateTicket<'info> {
-    
+
     /// CHECK: we good
     pub authority: AccountInfo<'info>,
 
