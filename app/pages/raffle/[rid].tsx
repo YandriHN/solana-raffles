@@ -11,6 +11,7 @@ import Countdown from "react-countdown";
 import Loading from "../../src/components/loading";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import Head from "next/head";
+import { getPriceWithDecimal, getTokenInfo, TokenDataType } from "../../src/utils/tokeninfo";
 
 
 
@@ -27,6 +28,7 @@ type RaffleType = {
   image: string;
   winners: number;
   token: PublicKey;
+  price: number;
 };
 
 const Raffle: NextPage = () => {
@@ -46,6 +48,17 @@ const Raffle: NextPage = () => {
   const [drawn, setDrawn] = useState<boolean>(false);
   const [winners, setWinners] = useState<JSX.Element[]>();
 
+  const [tokenInfo, setTokenInfo] = useState<TokenDataType | null>(null);
+
+  useEffect(() => {
+    if(!data) return;
+    const x = async () => {
+      const tokenInfo = await getTokenInfo(data.token);
+      setTokenInfo(tokenInfo);
+    };
+    x();
+  }, [data])
+
 
   const getAndSetRaffle = async () => {
     if (!program || !rid) return;
@@ -60,7 +73,8 @@ const Raffle: NextPage = () => {
         ends: raffle.ends.toNumber(),
         image: raffle.image,
         winners: Number(raffle.winners),
-        token: raffle.token
+        token: raffle.token,
+        price: raffle.price.toNumber()
       });
       setLoading(false);
     } catch {
@@ -298,6 +312,15 @@ const Raffle: NextPage = () => {
           )}
         <div className={`${styles.actions} ${(Date.now() / 1000 > data.ends) && styles.disabled}`}>
           <h2>Purchase Tickets</h2>
+          <p>
+            Ticket Price: &nbsp; <b>{ tokenInfo ? (
+            <>
+              {getPriceWithDecimal(tokenInfo, data.price)}
+              &nbsp;
+              ${tokenInfo.symbol}
+            </>
+              ): 0}</b>
+          </p>
           <p>
             Current Tickets: &nbsp; <b>{purchasedTickets}</b>
           </p>
