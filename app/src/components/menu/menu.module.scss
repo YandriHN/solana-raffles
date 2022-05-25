@@ -41,8 +41,16 @@
     }
   }
   .wallet_button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     button {
       height:60px;
+      margin:0;
+      @media only screen and (max-width: 800px) {
+        width:100px;
+      }
     }
     float: right;
     height: 60px;
@@ -51,6 +59,7 @@
     }
   }
   width: 100%;
+  max-width: 100%;
   border-bottom: 1px solid $cream;
   height: 100px;
   padding: 20px 0;
