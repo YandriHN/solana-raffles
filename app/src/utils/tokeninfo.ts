@@ -27,3 +27,10 @@ export const getPriceWithDecimal = (
 ): number => {
     return price / Math.pow(10, tokenData.decimals);
 }
+
+export const getFeeWithDecimal = (
+    tokenData: TokenDataType,
+    price: number
+): number => {
+    return price * Math.pow(10, tokenData.decimals);
+}

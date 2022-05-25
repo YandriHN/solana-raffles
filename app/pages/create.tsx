@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import Popup from "../src/components/popup";
 import Head from "next/head";
+import { getFeeWithDecimal, getPriceWithDecimal, getTokenInfo } from "../src/utils/tokeninfo";
 
 
 const Create: NextPage = () => {
@@ -67,6 +68,7 @@ const Create: NextPage = () => {
       if (!program) return console.log('No Program');
       if (!wallet) return console.log('No wallet connected');
 
+
       if(!customToken) {
         toast.error('SOL is currently unsupported');
         setLoading(false);
@@ -109,13 +111,15 @@ const Create: NextPage = () => {
         return;
       }
 
+      const tokenInfo = await getTokenInfo(new PublicKey(token));
+      const entry_fee = getFeeWithDecimal(tokenInfo, parseFloat(fee));
 
       const image_url: string = image == '' ? 'https://i.ibb.co/whcrbrJ/blank.png' : await uploadImage(image);
 
       const raffle = Keypair.generate();
       const instruction = await createRaffle(
         program.program,
-        Number(fee),
+        entry_fee,
         title,
         description,
         ends,
