@@ -52,7 +52,7 @@ const Home: NextPage = () => {
       <div className={styles.disclaimer}>
         <h3>Disclaimer</h3>
         <p>
-          Solana Raffles is providing a service to host raffles, we do not
+          DAOify is providing a service to host raffles, we do not
           endorse any raffles hosted on this site - please use discretion when
           participating.
         </p>
