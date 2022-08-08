@@ -1,7 +1,7 @@
 [features]
 seeds = false
 [programs.devnet]
-solana_raffles = "4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf"
+solana_raffles = "795kjBPB7b8mFBHMMUmDmVGuczfrTXz9XN3DpAufFKpc"
 
 [registry]
 url = "https://anchor.projectserum.com"
