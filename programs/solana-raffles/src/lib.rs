@@ -3,7 +3,7 @@ use anchor_spl::token::{self};
 use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::*;
 
-declare_id!("4ZEPy6oo8oHzbU6bkiY2m8pLb7aNzyzZaMpAZ6CeZQQf");
+declare_id!("795kjBPB7b8mFBHMMUmDmVGuczfrTXz9XN3DpAufFKpc");
 
 
 #[program]

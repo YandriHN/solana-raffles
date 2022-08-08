@@ -2,3 +2,7 @@
 members = [
     "programs/*"
 ]
+
+[dependencies]
+solana-security-txt = "1.0.1"
+

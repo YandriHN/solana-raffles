@@ -58,7 +58,7 @@
     },
     "browser": {
         "fs": false,
-        "path": false,
-        "os": false
+        "os": false,
+        "path": false
     }
 }
